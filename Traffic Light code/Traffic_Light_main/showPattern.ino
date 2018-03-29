@@ -12,6 +12,4 @@ void showPattern (byte PATTERN) {
 
   digitalWrite(STORAGEREGISTER, HIGH);
   digitalWrite(STORAGEREGISTER, LOW);
-
-
 }
