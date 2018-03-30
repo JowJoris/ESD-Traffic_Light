@@ -5,3 +5,10 @@ void buzzerLopen(){
   delay(1000);
 }
 
+void buzzerCountdown(){
+}
+
+void buzzerSluiten(){
+  
+}
+

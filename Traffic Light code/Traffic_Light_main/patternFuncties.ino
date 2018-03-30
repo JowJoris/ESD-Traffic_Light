@@ -12,4 +12,14 @@ void showPattern (byte PATTERN) {
 
   digitalWrite(STORAGEREGISTER, HIGH);
   digitalWrite(STORAGEREGISTER, LOW);
+
+
 }
+
+void patternCountdown() {
+  for (int i = PATTERN_NUMBERS_LENGTH; i >= 0; i--) {
+      showPattern(PATTERN_NUMBERS[i]);
+      delay(1000);
+  }
+}
+
