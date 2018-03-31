@@ -5,7 +5,6 @@ Servo servo;
 const int CLOCK = 7;
 const int DATASERIAL = 5;
 const int STORAGEREGISTER = 6;
-//
 
 //Patterns
 const int PATTERN_NUMBERS [] = {
@@ -18,13 +17,11 @@ const int PATTERN_NUMBERS [] = {
   B10111110, //6
 };
 
-const int PATTERN_WALK_STOP [] = {
+const int PATTERN_SWC [] = {
   B01101110, // Stop
   B01101100, // Walk
+  B10011100, // Caution
 };
-
-const int PATTERN_NUMBERS_LENGTH = sizeof(PATTERN_NUMBERS) / sizeof(PATTERN_NUMBERS[0]);
-//
 
 bool ruststand;
 int staat;
@@ -44,7 +41,15 @@ const int BUZZERPIN = 3;
 //Time
 unsigned long currentTime;
 unsigned long previousTime;
-int T;
+
+//Stoplicht variabelen
+const int INTERVAL_SL_Geel_Rood = 2000;
+const int INTERVAL_SL_Groen_Rood = 10000;
+const int INTERVAL_DODE_TIJD = 5000;
+
+//LDR
+int LDRPin = A0;
+int LDRWaarde;
 
 void setup() {
   Serial.begin(9600);
@@ -57,30 +62,33 @@ void setup() {
 
 void loop() {
   currentTime = millis();
-  Serial.println(staat);
+  LDRWaarde = analogRead(LDRPin);
+  Serial.println(LDRWaarde);
   switch (staat) {
     case 0: //beginstand
-      T = 0;
       poortSluiten();
       LED_R_State(1);
-      showPattern(PATTERN_WALK_STOP[0]);
+      showPattern(PATTERN_SWC[0]);
       ruststand = true;
-      if (ruststand == true && poortValue <= POORTMIN) {
+      if (LDRWaarde <= 200) {
+        staat = 21;
+      }
+      else if (poortValue <= POORTMIN) {
         ruststand = false;
-        staat = 1;
         previousTime = currentTime;
+        staat = 1;
       }
       break;
 
     case 1: //Poort openen
       poortOpenen();
       if (poortValue >= POORTMAX) {
-        staat = 2;
         previousTime = currentTime;
+        staat = 2;
       }
       break;
     case 2:// Poort open
-      showPattern(PATTERN_WALK_STOP[1]);
+      showPattern(PATTERN_SWC[1]);
       buzzerLopen();
 
       if (currentTime - previousTime >= INTERVAL_POORT) {
@@ -88,21 +96,80 @@ void loop() {
       }
       break;
 
-      case 3: //Poort laatste kans
+    case 3: //Poort laatste kans
       patternCountdown();
       buzzerCountdown();
       if (currentTime - previousTime >= INTERVAL_POORT + 6) {
         staat = 4;
       }
+      break;
 
-      case 4://Poort sluiten
-      showPattern(PATTERN_WALK_STOP[0]);
+    case 4://Poort sluiten
+      showPattern(PATTERN_SWC[0]);
       poortSluiten();
       buzzerSluiten();
-      if(poortValue <= POORTMIN){
+      if (poortValue <= POORTMIN) {
         staat = 0;
         ruststand = true;
       }
+      break;
+
+    case 11: //Stoplicht Groen
+      LED_R_State(0);
+      LED_G_State(1);
+
+      if (currentTime - previousTime >= INTERVAL_SL_Groen_Rood - INTERVAL_SL_Geel_Rood) {
+        previousTime = currentTime;
+        LED_G_State(0);
+        staat = 6;
+      }
+      break;
+
+    case 12: //Stoplicht Geel
+      LED_Y_State(1);
+      if (currentTime - previousTime >= INTERVAL_SL_Geel_Rood) {
+        previousTime = currentTime;
+        LED_Y_State(0);
+        staat = 7;
+      }
+      break;
+
+    case 13: //Stoplicht Rood
+      LED_R_State(1);
+      if (currentTime - previousTime >= INTERVAL_DODE_TIJD) {
+        staat = 0;
+      }
+      break;
+
+    case 21: //Poort openen nacht
+      buzzerNacht();
+      poortOpenen();
+      if (poortValue >= POORTMAX) {
+        staat = 22;
+      }
+      break;
+
+    case 22:
+      LED_R_State(0);
+      showPattern(PATTERN_SWC[2]);
+      LED_Y_Blink();
+      if (LDRWaarde > 200) {
+        staat = 23;
+      }
+      break;
+
+    case 23:
+      showPattern(PATTERN_SWC[0]);
+      buzzerNacht();
+      poortSluiten();
+      LED_Y_State(1);
+      if (poortValue == POORTMIN) {
+        LED_Y_State(0);
+        staat = 0;
+      }
+
+
+
   }
 }
 

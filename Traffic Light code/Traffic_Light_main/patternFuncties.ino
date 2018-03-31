@@ -17,9 +17,10 @@ void showPattern (byte PATTERN) {
 }
 
 void patternCountdown() {
+  const int PATTERN_NUMBERS_LENGTH = sizeof(PATTERN_NUMBERS) / sizeof(PATTERN_NUMBERS[0]);
   for (int i = PATTERN_NUMBERS_LENGTH; i >= 0; i--) {
-      showPattern(PATTERN_NUMBERS[i]);
-      delay(1000);
+    showPattern(PATTERN_NUMBERS[i]);
+    delay(1000);
   }
 }
 
