@@ -8,7 +8,6 @@ const int STORAGEREGISTER = 6;
 
 //Patterns
 const int PATTERN_NUMBERS [] = {
-  B11111100, //0
   B01100000, //1
   B11011010, //2
   B11110010, //3
@@ -23,13 +22,15 @@ const int PATTERN_SWC [] = {
   B10011100, // Caution
 };
 
+const int PATTERN_NUMBERS_LENGTH = sizeof(PATTERN_NUMBERS) / sizeof(PATTERN_NUMBERS[0]);
+
 bool ruststand;
 int staat;
 
 //Poort variabelen
 const int POORTMIN = 0;
 const int POORTMAX = 180;
-const int beweegTijd = 3000;
+const int beweegTijd = 5000;
 int poortValue = POORTMIN;
 const int POORTDELAY = beweegTijd / POORTMAX;
 const int INTERVAL_POORT = 5000;
@@ -48,8 +49,17 @@ const int INTERVAL_SL_Groen_Rood = 10000;
 const int INTERVAL_DODE_TIJD = 5000;
 
 //LDR
-int LDRPin = A0;
+int LDRPin = 0;
 int LDRWaarde;
+
+//Array knoppen ingedrukt
+int knoppenIngedrukt [3];
+int volgNr=0;
+
+
+const int BUTTON_INTERVAL = 10;
+
+const int KNOPPEN [] = {5, 4, 3};
 
 void setup() {
   Serial.begin(9600);
@@ -57,29 +67,36 @@ void setup() {
   setupServo();
   setupLED();
   setupBuzzer();
+  setupLDR();
+//  setupKnoppen();
   staat = 0;
 }
 
 void loop() {
   currentTime = millis();
   LDRWaarde = analogRead(LDRPin);
-  Serial.println(LDRWaarde);
+  checkInput();
+  
+
   switch (staat) {
+
     case 0: //beginstand
       poortSluiten();
       LED_R_State(1);
       showPattern(PATTERN_SWC[0]);
       ruststand = true;
       if (LDRWaarde <= 200) {
+        ruststand = false;
         staat = 21;
       }
       else if (poortValue <= POORTMIN) {
         ruststand = false;
         previousTime = currentTime;
-        staat = 1;
+        staat = 0;
       }
       break;
 
+    //Voetganger
     case 1: //Poort openen
       poortOpenen();
       if (poortValue >= POORTMAX) {
@@ -87,6 +104,7 @@ void loop() {
         staat = 2;
       }
       break;
+
     case 2:// Poort open
       showPattern(PATTERN_SWC[1]);
       buzzerLopen();
@@ -99,7 +117,7 @@ void loop() {
     case 3: //Poort laatste kans
       patternCountdown();
       buzzerCountdown();
-      if (currentTime - previousTime >= INTERVAL_POORT + 6) {
+      if (currentTime - previousTime >= INTERVAL_POORT + PATTERN_NUMBERS_LENGTH) {
         staat = 4;
       }
       break;
@@ -110,10 +128,10 @@ void loop() {
       buzzerSluiten();
       if (poortValue <= POORTMIN) {
         staat = 0;
-        ruststand = true;
       }
       break;
 
+    //Auto
     case 11: //Stoplicht Groen
       LED_R_State(0);
       LED_G_State(1);
@@ -121,7 +139,7 @@ void loop() {
       if (currentTime - previousTime >= INTERVAL_SL_Groen_Rood - INTERVAL_SL_Geel_Rood) {
         previousTime = currentTime;
         LED_G_State(0);
-        staat = 6;
+        staat = 12;
       }
       break;
 
@@ -130,7 +148,7 @@ void loop() {
       if (currentTime - previousTime >= INTERVAL_SL_Geel_Rood) {
         previousTime = currentTime;
         LED_Y_State(0);
-        staat = 7;
+        staat = 13;
       }
       break;
 

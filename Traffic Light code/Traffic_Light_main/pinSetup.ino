@@ -13,14 +13,29 @@ void setupServo() {
   servo.attach(SERVOPIN);
 }
 
+//LEDs
 void setupLED() {
-  const int LEDS []= {13, 12, 11, 10, 9, 8};
+  const int LEDS [] = {13, 12, 11, 10, 9, 8};
   for (int i = 0; i < sizeof(LEDS) / sizeof(LEDS[0]); i++) {
     pinMode(LEDS[i], OUTPUT);
   }
 }
 
+//Buzzer
 void setupBuzzer() {
   pinMode(BUZZERPIN, OUTPUT);
+}
+
+//LDR
+void setupLDR(){
+pinMode(LDRPin+14, INPUT);  
+}
+
+//Knoppen
+void setupKnoppen() {
+  for (int i = 0; i < sizeof(KNOPPEN) / sizeof(KNOPPEN[0]); i++) {
+    pinMode(i, INPUT);
+    
+  }
 }
 
