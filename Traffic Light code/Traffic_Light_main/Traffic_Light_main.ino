@@ -54,8 +54,6 @@ int LDRWaarde;
 
 //Array knoppen ingedrukt
 int knoppenIngedrukt [3];
-int volgNr=0;
-
 
 const int BUTTON_INTERVAL = 10;
 
@@ -68,7 +66,6 @@ void setup() {
   setupLED();
   setupBuzzer();
   setupLDR();
-//  setupKnoppen();
   staat = 0;
 }
 
@@ -76,7 +73,7 @@ void loop() {
   currentTime = millis();
   LDRWaarde = analogRead(LDRPin);
   checkInput();
-  
+
 
   switch (staat) {
 
@@ -89,10 +86,15 @@ void loop() {
         ruststand = false;
         staat = 21;
       }
-      else if (poortValue <= POORTMIN) {
+      else if (poortValue <= POORTMIN && knoppenIngedrukt[0] == 4) { //Voetganger
         ruststand = false;
         previousTime = currentTime;
-        staat = 0;
+        staat = 1;
+      }
+      else if (poortValue <= POORTMIN && (knoppenIngedrukt[0] == 3 || knoppenIngedrukt[0] == 5)) { //Auto links
+        ruststand = false;
+        previousTime = currentTime;
+        staat = 11;
       }
       break;
 
@@ -127,6 +129,7 @@ void loop() {
       poortSluiten();
       buzzerSluiten();
       if (poortValue <= POORTMIN) {
+        schuifArrayDoor();
         staat = 0;
       }
       break;
@@ -155,6 +158,7 @@ void loop() {
     case 13: //Stoplicht Rood
       LED_R_State(1);
       if (currentTime - previousTime >= INTERVAL_DODE_TIJD) {
+        schuifArrayDoor();
         staat = 0;
       }
       break;
@@ -185,9 +189,6 @@ void loop() {
         LED_Y_State(0);
         staat = 0;
       }
-
-
-
   }
 }
 

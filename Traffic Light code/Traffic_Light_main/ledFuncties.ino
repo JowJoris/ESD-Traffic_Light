@@ -1,33 +1,69 @@
 void LED_R_State (int staat) {
   if (staat == 1) {
-    digitalWrite(13, HIGH);
-    digitalWrite(10, HIGH);
+    if (knoppenIngedrukt[0] == 3) {
+      digitalWrite(13, HIGH);
+    }
+    else if (knoppenIngedrukt[0] == 5) {
+      digitalWrite(10, HIGH);
+    }
+    else {
+      digitalWrite(13, HIGH);
+      digitalWrite(10, HIGH);
+    }
   }
   else if (staat == 0) {
-    digitalWrite(13, LOW);
-    digitalWrite(10, LOW);
+    if (knoppenIngedrukt[0] == 3) {
+      digitalWrite(13, LOW);
+    }
+    else if (knoppenIngedrukt[0] == 5) {
+      digitalWrite(10, LOW);
+    }
   }
 }
 
 void LED_Y_State (int staat) {
   if (staat == 1) {
-    digitalWrite(12, HIGH);
-    digitalWrite(9, HIGH);
+    if (knoppenIngedrukt[0] == 3) {
+      digitalWrite(12, HIGH);
+    }
+    else if (knoppenIngedrukt[0] == 5) {
+      digitalWrite(9, HIGH);
+    }
+    else {
+      digitalWrite(12, HIGH);
+      digitalWrite(9, HIGH);
+    }
   }
   else if (staat == 0) {
-    digitalWrite(12, LOW);
-    digitalWrite(9, LOW);
+    if (knoppenIngedrukt[0] == 3) {
+      digitalWrite(12, LOW);
+    }
+    else if (knoppenIngedrukt[0] == 5) {
+      digitalWrite(9, LOW);
+    }
+    else {
+      digitalWrite(12, HIGH);
+      digitalWrite(9, HIGH);
+    }
   }
 }
 
 void LED_G_State (int staat) {
   if (staat == 1) {
-    digitalWrite(11, HIGH);
-    digitalWrite(8, HIGH);
+    if (knoppenIngedrukt[0] == 3) {
+      digitalWrite(11, HIGH);
+    }
+    else if (knoppenIngedrukt[0] == 5) {
+      digitalWrite(8, HIGH);
+    }
   }
   else if (staat == 0) {
-    digitalWrite(11, LOW);
-    digitalWrite(8, LOW);
+    if (knoppenIngedrukt[0] == 3) {
+      digitalWrite(11, LOW);
+    }
+    else if (knoppenIngedrukt[0] == 5) {
+      digitalWrite(8, LOW);
+    }
   }
 }
 

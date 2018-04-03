@@ -27,15 +27,9 @@ void setupBuzzer() {
 }
 
 //LDR
-void setupLDR(){
-pinMode(LDRPin+14, INPUT);  
+void setupLDR() {
+  pinMode(LDRPin + 14, INPUT);
 }
 
-//Knoppen
-void setupKnoppen() {
-  for (int i = 0; i < sizeof(KNOPPEN) / sizeof(KNOPPEN[0]); i++) {
-    pinMode(i, INPUT);
-    
-  }
-}
+
 
