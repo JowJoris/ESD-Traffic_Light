@@ -18,6 +18,10 @@ void LED_R_State (int staat) {
     else if (knoppenIngedrukt[0] == 5) {
       digitalWrite(10, LOW);
     }
+    else {
+      digitalWrite(13, LOW);
+      digitalWrite(10, LOW);
+    }
   }
 }
 
@@ -42,8 +46,8 @@ void LED_Y_State (int staat) {
       digitalWrite(9, LOW);
     }
     else {
-      digitalWrite(12, HIGH);
-      digitalWrite(9, HIGH);
+      digitalWrite(12, LOW);
+      digitalWrite(9, LOW);
     }
   }
 }

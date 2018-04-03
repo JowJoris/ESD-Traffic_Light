@@ -31,7 +31,7 @@ int staat;
 const int POORTMIN = 0;
 const int POORTMAX = 180;
 const int beweegTijd = 5000;
-int poortValue = POORTMIN;
+int poortValue;
 const int POORTDELAY = beweegTijd / POORTMAX;
 const int INTERVAL_POORT = 5000;
 
@@ -91,7 +91,7 @@ void loop() {
         previousTime = currentTime;
         staat = 1;
       }
-      else if (poortValue <= POORTMIN && (knoppenIngedrukt[0] == 3 || knoppenIngedrukt[0] == 5)) { //Auto links
+      else if (poortValue <= POORTMIN && (knoppenIngedrukt[0] == 3 || knoppenIngedrukt[0] == 5)) { //Auto
         ruststand = false;
         previousTime = currentTime;
         staat = 11;
