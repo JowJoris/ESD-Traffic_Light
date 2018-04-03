@@ -185,7 +185,7 @@ void loop() {
       buzzerNacht();
       poortSluiten();
       LED_Y_State(1);
-      if (poortValue == POORTMIN) {
+      if (poortValue <= POORTMIN) {
         LED_Y_State(0);
         staat = 0;
       }

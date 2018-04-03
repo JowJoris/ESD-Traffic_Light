@@ -16,8 +16,12 @@ void checkArray(int knop) {
     }
     else if (knoppenIngedrukt[i] == 0) {
       knoppenIngedrukt[i] = knop;
-      Serial.println(i);
+      Serial.print("[");
+      Serial.print(i);
+      Serial.print("]");
+      Serial.print(" ");
       Serial.println(knop);
+      Serial.println(" ");
       break;
     }
   }
@@ -29,7 +33,12 @@ void schuifArrayDoor() {
   }
   knoppenIngedrukt[(sizeof(KNOPPEN) / sizeof(KNOPPEN[0])) - 1] = 0;
   for (int i = 0; i < sizeof(knoppenIngedrukt) / sizeof(knoppenIngedrukt[0]); i++) {
+    Serial.print("[");
+    Serial.print(i);
+    Serial.print("]");
+    Serial.print(" ");
     Serial.println(knoppenIngedrukt[i]);
   }
+  Serial.println(" ");
 }
 
