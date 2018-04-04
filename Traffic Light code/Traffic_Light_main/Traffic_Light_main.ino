@@ -1,3 +1,9 @@
+/* Naam:            Joris Huinink
+ * Studentennummer: 597240
+ * Datum:           4-4-2018
+ * Klas:            I1DA 
+ */
+
 #include <Servo.h>
 Servo servo;
 
@@ -98,6 +104,7 @@ void loop() {
       }
       break;
 
+
     //Voetganger
     case 1: //Poort openen
       poortOpenen();
@@ -134,6 +141,7 @@ void loop() {
       }
       break;
 
+
     //Auto
     case 11: //Stoplicht Groen
       LED_R_State(0);
@@ -163,6 +171,8 @@ void loop() {
       }
       break;
 
+
+    //Nacht
     case 21: //Poort openen nacht
       buzzerNacht();
       poortOpenen();

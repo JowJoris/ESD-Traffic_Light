@@ -17,7 +17,7 @@ void showPattern (byte PATTERN) {
 }
 
 void patternCountdown() {
-  for (int i = PATTERN_NUMBERS_LENGTH-1; i >= 0; i--) {
+  for (int i = PATTERN_NUMBERS_LENGTH - 1; i >= 0; i--) {
     showPattern(PATTERN_NUMBERS[i]);
     delay(1000);
   }
