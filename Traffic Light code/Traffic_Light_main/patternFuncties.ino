@@ -20,7 +20,6 @@ void patternCountdown() {
   if (currentTime -  previousTime >= 1000) {
     showPattern(PATTERN_NUMBERS[iCountdown-1]);
     iCountdown--;
-    Serial.println(iCountdown);
     previousTime = currentTime;
   }
 }
