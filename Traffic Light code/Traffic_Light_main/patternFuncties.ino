@@ -17,9 +17,11 @@ void showPattern (byte PATTERN) {
 }
 
 void patternCountdown() {
-  for (int i = PATTERN_NUMBERS_LENGTH - 1; i >= 0; i--) {
-    showPattern(PATTERN_NUMBERS[i]);
-    delay(1000);
+  if (currentTime -  previousTime >= 1000) {
+    showPattern(PATTERN_NUMBERS[iCountdown-1]);
+    iCountdown--;
+    Serial.println(iCountdown);
+    previousTime = currentTime;
   }
 }
 

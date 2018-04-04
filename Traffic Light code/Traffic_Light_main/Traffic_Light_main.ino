@@ -48,6 +48,7 @@ const int BUZZERPIN = 3;
 //Time
 unsigned long currentTime;
 unsigned long previousTime;
+int iCountdown = PATTERN_NUMBERS_LENGTH;
 
 //Stoplicht variabelen
 const int INTERVAL_SL_Geel_Rood = 2000;
@@ -119,6 +120,7 @@ void loop() {
       buzzerLopen();
 
       if (currentTime - previousTime >= INTERVAL_POORT) {
+        previousTime = currentTime;
         staat = 3;
       }
       break;
@@ -126,8 +128,9 @@ void loop() {
     case 3: //Poort laatste kans
       patternCountdown();
       buzzerCountdown();
-      if (currentTime - previousTime >= INTERVAL_POORT + PATTERN_NUMBERS_LENGTH) {
+      if (iCountdown < 0) {
         staat = 4;
+        iCountdown = PATTERN_NUMBERS_LENGTH;
       }
       break;
 
@@ -182,7 +185,7 @@ void loop() {
       break;
 
     case 22:
-      LED_R_State(0);
+      LED_R_State(0); //Poort open nacht
       showPattern(PATTERN_SWC[2]);
       LED_Y_Blink();
       if (LDRWaarde > 200) {
@@ -190,7 +193,7 @@ void loop() {
       }
       break;
 
-    case 23:
+    case 23: //Poort sluiten nacht
       showPattern(PATTERN_SWC[0]);
       buzzerNacht();
       poortSluiten();
